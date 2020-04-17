@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SprintOne.Models.ViewModels.PaceMatchViewModel>
+
+
+@{
+    ViewData["Title"] = "Best Mile Times";
+}
+<h1>Best Mile Times</h1>
+
+
+
+<p>
+    <a asp-action="Create">Add Personal Time</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User ID
+            </th>
+            <th>
+                Best Mile Time
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunnerID)
+                </td>
+                <td>
+                    @String.Format("{0:00}:{1:00}", item.MileTime / 60, item.MileTime % 60)
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="Profiles" asp-action="Details" asp-route-id="@item.RunnerID">View Profile</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

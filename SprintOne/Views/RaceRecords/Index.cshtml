@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SprintOne.Models.RaceRecord>
+
+@{
+    ViewData["Title"] = "All Race Records";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RaceType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RaceTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MileTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RaceProfile.FirstName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                @switch (item.RaceType)
+                {
+                    case 1:
+                        <td>One Mile</td>
+                        break;
+                    case 2:
+                        <td>5 kilometer</td>
+                        break;
+                    case 3:
+                        <td>10 kilometer</td>
+                        break;
+                    case 4:
+                        <td>Half Marathon</td>
+                        break;
+                    case 5:
+                        <td>Full Marathon</td>
+                        break;
+                    default:
+                        <td>Invalid Race Type</td>
+                        break;
+                }
+            <td>
+                @String.Format("{0:00}:{1:00}:{2:00}", item.RaceTime / 3600, ((item.RaceTime % 3600) / 60), ((item.RaceTime % 3600) % 60))
+            </td>
+            <td>
+                @String.Format("{0:00}:{1:00}", item.MileTime / 60, item.MileTime % 60)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaceProfile.FirstName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RaceRecordID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RaceRecordID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RaceRecordID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

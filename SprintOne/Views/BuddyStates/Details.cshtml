@@ -1,0 +1,36 @@
+﻿@model SprintOne.Models.BuddyState
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>BuddyState</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstProfile)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstProfile.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SecondProfile)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SecondProfile.FirstName)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

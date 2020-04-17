@@ -1,0 +1,120 @@
+﻿@model SprintOne.Models.ViewModels.ProfileViewModel;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+        <h3>Profile Details</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        First Name
+                    </th>
+                    <th>
+                        Last Name
+                    </th>
+                    <th>
+                        Profile Creation Date
+                    </th>
+                    <th>
+                        Buddy Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.MyProfile.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.MyProfile.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.MyProfile.CreationDate)
+                    </td>
+                    @if (Model.BuddyFlag != 0)
+                    {
+                        switch (Model.BuddyFlag)
+                        {
+                            case 1:
+                                <td>Friends</td>
+                                break;
+                            case 2:
+                                <td>Pending</td>
+                                break;
+                            case 3:
+                                <td>Blocked </td>
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        <td>No Status</td>
+                    }
+
+                </tr>
+            </tbody>
+         </table>
+
+    @if (Model.MyRaceRecords != null)
+    {
+        <h3>@Html.DisplayFor(Model => Model.MyProfile.FirstName)'s Race Records</h3>
+        <table class="table">
+            <tr>
+                <th>Race Type</th>
+                <th>Total Race Time</th>
+                <th>One Mile Time</th>
+            </tr>
+
+            @foreach (var item in Model.MyRaceRecords)
+            {
+
+            <tr>
+                @switch (item.RaceType)
+                {
+                    case 1:
+                        <td>One Mile</td>
+                        break;
+                    case 2:
+                        <td>5 kilometer</td>
+                        break;
+                    case 3:
+                        <td>10 kilometer</td>
+                        break;
+                    case 4:
+                        <td>Half Marathon</td>
+                        break;
+                    case 5:
+                        <td>Full Marathon</td>
+                        break;
+                    default:
+                        <td>Invalid Race Type</td>
+                        break;
+                }
+            <td>
+                @String.Format("{0:00}:{1:00}:{2:00}", item.RaceTime / 3600, ((item.RaceTime % 3600) / 60), ((item.RaceTime % 3600) % 60))
+            </td>
+            <td>
+                @String.Format("{0:00}:{1:00}", item.MileTime / 60, item.MileTime % 60)
+            </td>
+            </tr>
+            }
+
+        </table>
+
+    }
+
+</div>
+<div>
+    <a asp-controller="Home" asp-action="Index">Home</a>
+    <a asp-controller="RaceRecords" asp-action="IndexMatch">Back To Time List</a>
+</div>
+
+@*
+    @Html.DisplayFor(modelItem => item.RaceTime)
+    @(item.RaceTime)
+    @(item.RaceTime % 60)
+
+*@

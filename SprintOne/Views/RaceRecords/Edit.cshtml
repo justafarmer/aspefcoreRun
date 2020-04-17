@@ -1,0 +1,49 @@
+﻿@model SprintOne.Models.RaceRecord
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>RaceRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RaceRecordID" />
+            <div class="form-group">
+                <label asp-for="ProfileID" class="control-label"></label>
+                <select asp-for="ProfileID" class="form-control" asp-items="ViewBag.ProfileID"></select>
+                <span asp-validation-for="ProfileID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceType" class="control-label"></label>
+                <input asp-for="RaceType" class="form-control" />
+                <span asp-validation-for="RaceType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceTime" class="control-label"></label>
+                <input asp-for="RaceTime" class="form-control" />
+                <span asp-validation-for="RaceTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MileTime" class="control-label"></label>
+                <input asp-for="MileTime" class="form-control" />
+                <span asp-validation-for="MileTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

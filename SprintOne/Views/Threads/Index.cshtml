@@ -1,0 +1,73 @@
+﻿@model SprintOne.Models.ViewModels.MailboxViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Initiator ID
+            </th>
+            <th>
+                Receiver ID
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Threads)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InitiatorID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiverID)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-retrieveThreadID="@item.ThreadID">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Messages != null)
+{
+    <h1> Conversations </h1>
+    <table class="table">
+        <tr>
+            <th>Message ID</th>
+            <th>Message Header</th>
+            <th>Message Body</th>
+            <th>Message Sender</th>
+        </tr>
+
+        @foreach (var item in Model.Messages)
+        {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MessageID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MsgHeader)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MsgBody)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MsgSenderID)
+            </td>
+        </tr>
+        }
+
+    </table>
+}

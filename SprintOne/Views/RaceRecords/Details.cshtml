@@ -1,0 +1,42 @@
+﻿@model SprintOne.Models.RaceRecord
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>RaceRecord</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RaceType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RaceType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RaceTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RaceTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MileTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MileTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RaceProfile)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RaceProfile.FirstName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RaceRecordID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

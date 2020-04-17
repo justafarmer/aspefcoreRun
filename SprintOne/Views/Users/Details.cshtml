@@ -1,0 +1,85 @@
+﻿@model SprintOne.Models.User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeEntries)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Race Type</th>
+                    <th>Time</th>
+                    <th>1 Mile Pace</th>
+                </tr>
+                @foreach (var item in Model.TimeEntries)
+                {
+                    <tr>
+                        @switch (item.RaceType)
+                        {
+                            case 1:
+                                <td>1 Mile</td>
+                                break;
+                            case 2:
+                                <td>5K</td>
+                                break;
+                            case 3:
+                                <td>10k</td>
+                                break;
+                            case 4:
+                                <td>Half Marathon</td>
+                                break;
+                            case 5:
+                                <td>Full Marathon</td>
+                                break;
+                        }
+                        <td>
+                            @String.Format("{0:00}:{1:00}:{2:00}", item.RaceTime / 3600, ((item.RaceTime % 3600) / 60), ((item.RaceTime % 3600) % 60))
+                        </td>
+                        <td>
+                            @String.Format("{0:00}:{1:00}", item.MileTime / 60, item.MileTime % 60)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.UserID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@*
+    @Html.DisplayFor(modelItem => item.RaceTime)
+    @(item.RaceTime)
+    @(item.RaceTime % 60)
+
+*@
