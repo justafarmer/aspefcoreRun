@@ -10,7 +10,7 @@ using SprintOne.Data;
 namespace SprintOne.Migrations
 {
     [DbContext(typeof(MatchContext))]
-    [Migration("20200417120533_initial")]
+    [Migration("20200421053014_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
