@@ -1,39 +1,56 @@
-﻿@model SprintOne.Models.RaceRecord
+﻿@model SprintOne.Models.ViewModels.RaceRecordViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Enter New Personal Race Time</h1>
 
-<h4>RaceRecord</h4>
+<h4></h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RaceType" class="control-label">Race Type: 1 = Mile, 2 = 5k, 3 = 10k, 4 = Half, 5 = Full</label>
-                <input asp-for="RaceType" class="form-control" />
-                <span asp-validation-for="RaceType" class="text-danger"></span>
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Race Type:</label></div>
+                <div class="col-sm-4">
+                    <select asp-for="RaceType" asp-items="@Model.RaceTypeList">
+                        <option>Select Race Type</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <span asp-validation-for="RaceType" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="RaceTime" class="control-label"></label>
-                <input asp-for="RaceTime" class="form-control" />
-                <span asp-validation-for="RaceTime" class="text-danger"></span>
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Hours</label></div>
+                <div class="col-sm-4">
+                    <input asp-for="RaceTimeHours" class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                    <span asp-validation-for="RaceTimeHours" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="MileTime" class="control-label"></label>
-                <input asp-for="MileTime" class="form-control" />
-                <span asp-validation-for="MileTime" class="text-danger"></span>
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Minutes</label></div>
+                <div class="col-sm-4">
+                    <input asp-for="RaceTimeMinutes" class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                    <span asp-validation-for="RaceTimeMinutes" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Seconds</label></div>
+                <div class="col-sm-4">
+                    <input asp-for="RaceTimeSeconds" class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                    <span asp-validation-for="RaceTimeSeconds" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group offset-sm-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

@@ -73,20 +73,11 @@ namespace SprintOne.Controllers
 
         // GET: RaceRecords/Create
         public IActionResult Create()
-        {/*
-            var viewModel = new RaceRecord();
+        {
+            var viewModel = new RaceRecordViewModel();
 
-            viewModel.RaceLength = new List<SelectListItem>
-            {
-                new SelectListItem{Text = "One Mile", Value = "1"},
-                new SelectListItem{Text = "5k", Value = "2"},
-                new SelectListItem{Text = "10k", Value = "3"},
-                new SelectListItem{Text = "Half Marathon", Value = "4"},
-                new SelectListItem{Text = "Full Marathon", Value = "5"},
-            };
-            */
-            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "FirstName");
-            return View();
+//          ViewData["UserID"] = new SelectList(_context.Users, "UserID", "FirstName");
+            return View(viewModel);
         }
 
         // POST: RaceRecords/Create
@@ -94,23 +85,56 @@ namespace SprintOne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RaceType,RaceTime,MileTime")] RaceRecord raceRecord)
+        public async Task<IActionResult> Create([Bind("RaceType,RaceTimeHours,RaceTimeMinutes,RaceTimeSeconds")] RaceRecordViewModel raceRecordView)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            User user = _context.Users.Find(userId);
-            var currid = user.UserID;
 
-
-
+            
             if (ModelState.IsValid)
             {
-                raceRecord.ProfileID = currid;
-                _context.Add(raceRecord);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var currid = GetUserID();
+                int totalTime = raceRecordView.RaceTimeHours * 3600 + raceRecordView.RaceTimeMinutes * 60 + raceRecordView.RaceTimeSeconds;
+                RaceRecord race = new RaceRecord();
+                race.ProfileID = currid;
+                race.RaceTime = totalTime;
+                race.RaceType = raceRecordView.RaceType;
+
+                int mileTime;
+                switch (raceRecordView.RaceType)
+                {
+                    case 1:
+                        mileTime = totalTime;
+                        break;
+                    case 2:
+                        mileTime = Convert.ToInt32(totalTime / 3.106);
+                        break;
+                    case 3:
+                        mileTime = Convert.ToInt32(totalTime / 6.21);
+                        break;
+                    case 4:
+                        mileTime = Convert.ToInt32(totalTime / 13.11);
+                        break;
+                    case 5:
+                        mileTime = Convert.ToInt32(totalTime / 26.22);
+                        break;
+                    default:
+                        mileTime = 0;
+                        break;
+                }
+                race.MileTime = mileTime;
+                try
+                {
+                    _context.Add(race);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    return View();
+                }
+
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "FirstName", raceRecord.ProfileID);
-            return View(raceRecord);
+//            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "FirstName", raceRecord.ProfileID);
+            return View(raceRecordView);
         }
 
         // GET: RaceRecords/Edit/5
@@ -194,6 +218,14 @@ namespace SprintOne.Controllers
             _context.RaceRecords.Remove(raceRecord);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public int GetUserID()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _context.Users.Find(userId);
+            var currid = user.UserID;
+            return currid;
         }
 
         private bool RaceRecordExists(int id)

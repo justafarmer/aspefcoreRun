@@ -17,6 +17,12 @@ namespace SprintOne.Models
         // 1 = 1 mile, 2 = 5k, 3 = 10k, 4 = Half Marathon, 5 = Marathon
         public int RaceType { get; set; }
 
+        /*
+        public int RaceTimeHours { get; set; }
+        public int RaceTimeMinutes { get; set; }
+        public int RaceTimeSeconds { get; set; }
+        */
+
         //Total time, in seconds, for the race.
         public int RaceTime { get; set; }
 

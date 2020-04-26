@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SprintOne.Models.ViewModels
 {
-    public class BuddyStateViewControllercs
+    public class BuddyStateViewModel
     {
 
 

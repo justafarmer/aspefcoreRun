@@ -7,6 +7,7 @@ using System.Security.Claims;
 using SprintOne.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System;
 
 namespace SprintOne.Controllers
 {
@@ -35,34 +36,51 @@ namespace SprintOne.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var user = new SprintOne.Models.User
                 {
                     UserName = model.Username
                 };
 
-                var result = await userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
+                using (var registrationTransaction = _context.Database.BeginTransaction())
                 {
-                    var profile = new SprintOne.Models.Profile
+                    try
                     {
-                        FirstName = model.Firstname,
-                        LastName = model.Lastname
-                    };
-                    _context.Add(profile);
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
+                        var result = await userManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+                        {
+                            var profile = new SprintOne.Models.Profile
+                            {
+                                ProfileID = user.UserID,
+                                FirstName = model.Firstname,
+                                LastName = model.Lastname,
+                                CreationDate = DateTime.Now,
+                                UserID = user.UserID
+                            };
+                            _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Profiles ON");
+                            _context.Add(profile);
+                            _context.SaveChanges();
+                            _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Profiles OFF");
+                            registrationTransaction.Commit();
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                            return RedirectToAction("Success", "Home");
+                        }
+                        else
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError("", error.Description);
+                            }
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        registrationTransaction.Rollback();
+                        ModelState.AddModelError("", "Unable to register, please contact your administrator for more details.");
+                        return View(model);
+                    } 
                 }
             }
-            return View(model);
+                return View(model);
         }
 
         [HttpPost]

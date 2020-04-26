@@ -23,6 +23,11 @@ namespace SprintOne.Controllers
             return View();
         }
 
+        public IActionResult Success()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -44,20 +44,15 @@ namespace SprintOne.Controllers
                     .Single();
 
                 viewModel.Messages = thread.Conversations.Select(c => c.Message);
-
             }
-
             return View(viewModel);
-
 
             //return View(await _context.Threads.ToListAsync());
         }
 
         public async Task<IActionResult> Mail(int? retrieveThreadID)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            User user = _context.Users.Find(userId);
-            var currid = user.UserID;
+            var currid = GetUserID();
 
             var viewModel = new MailboxViewModel();
 
@@ -132,23 +127,21 @@ namespace SprintOne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Send(int ReceiverID, string Header, string Body)
+        public async Task<IActionResult> Send([Bind("ReceiverID", "Header", "Body")] MailboxViewModel mailBox)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            User user = _context.Users.Find(userId);
-            var currid = user.UserID;
 
             if (ModelState.IsValid)
             {
+                var currid = GetUserID();
                 var addThread = new Thread();
                 addThread.InitiatorID = currid;
-                addThread.ReceiverID = ReceiverID;
+                addThread.ReceiverID = mailBox.ReceiverID;
                 _context.Add(addThread);
                 await _context.SaveChangesAsync();
 
                 var addMessage = new Message();
-                addMessage.MsgHeader = Header;
-                addMessage.MsgBody = Body;
+                addMessage.MsgHeader = mailBox.Header;
+                addMessage.MsgBody = mailBox.Body;
                 addMessage.MsgSenderID = currid;
                 _context.Add(addMessage);
                 await _context.SaveChangesAsync();
@@ -162,7 +155,11 @@ namespace SprintOne.Controllers
                 return RedirectToAction(nameof(Mail));
             }
 
-            return View();
+            var testList = _context.Profiles
+                .Select(p => new { p.ProfileID, p.FirstName, p.LastName })
+                .ToList();
+            mailBox.ReceiverList = new SelectList(testList, "ProfileID", "FirstName");
+            return View(mailBox);
         }
 
 
@@ -187,6 +184,14 @@ namespace SprintOne.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(thread);
+        }
+
+        public int GetUserID()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _context.Users.Find(userId);
+            var currid = user.UserID;
+            return currid;
         }
     }
 }

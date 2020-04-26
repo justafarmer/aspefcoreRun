@@ -37,11 +37,7 @@ namespace SprintOne.Controllers
 
         public async Task<IActionResult> Index(string? show)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var userName = User.FindFirstValue(ClaimTypes.Name);
-            User user = _context.Users.Find(userId);
-            var currid = user.UserID;
-
+            var currid = GetUserID();
             var viewModel = new ProfileViewModel();
 
             viewModel.MyProfile =_context.Profiles.Find(currid);
@@ -256,10 +252,20 @@ namespace SprintOne.Controllers
                 return _context.Profiles.Any(e => e.ProfileID == id);
             }
 
+            public int GetUserID()
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                User user = _context.Users.Find(userId);
+                var currid = user.UserID;
+                return currid;
+            }
+
             public ViewResult AccessDenied()
-                {
+            {
                     return View();
-                }
+            }
+
+
 
     }
 
