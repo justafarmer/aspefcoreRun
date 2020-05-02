@@ -20,92 +20,119 @@
                 </form>
             </th>
             <th>
-                <form method="post" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-show="myrelationships">
+                <form method="post" asp-area="" asp-controller="Profiles" asp-action="Index" asp-route-show="mybuddies">
                     <button type="submit" class="btn btn-primary">Buddy List</button>
                 </form>
             </th>
         </tr>
     </thead>
+    <thead>
+        <tr>
+            <th>Profile ID </th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Creation Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(Model => Model.MyProfile.ProfileID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.MyProfile.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.MyProfile.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.MyProfile.CreationDate)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- This list should always have at least one record, one is required when registering.-->
+@if (Model.MyRaceRecords != null)
+{
+
+    <h3>Your Race Records</h3>
     <table class="table">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Creation Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => model.MyProfile.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.MyProfile.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.MyProfile.CreationDate)
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <tr>
+            <th>
+                <form method="post" asp-area="" asp-controller="RaceRecords" asp-action="CreatePersonal">
+                    <button type="submit" class="btn btn-primary">Add New Race Time!</button>
+                </form>
+            </th>
+        </tr>
+        <tr>
+            <th>Time Entry ID</th>
+            <th>Race Type</th>
+            <th>Total Race Time</th>
+            <th>One Mile Time</th>
+        </tr>
 
-    @if (Model.MyRaceRecords != null)
-    {
-        <h3>Your Race Records</h3>
-        <table class="table">
-            <tr>
-                <th>Race Type</th>
-                <th>Total Race Time</th>
-                <th>One Mile Time</th>
-            </tr>
+        <!--Cycle through all the user's race times.-->
+        @foreach (var item in Model.MyRaceRecords)
+        {
 
-            @foreach (var item in Model.MyRaceRecords)
+        <tr>
+            <td>
+                @item.RaceRecordID
+            </td>
+            @switch (item.RaceType)
             {
-
-            <tr>
-                @switch (item.RaceType)
-                {
-                    case 1:
-                        <td>One Mile</td>
-                        break;
-                    case 2:
-                        <td>5 kilometer</td>
-                        break;
-                    case 3:
-                        <td>10 kilometer</td>
-                        break;
-                    case 4:
-                        <td>Half Marathon</td>
-                        break;
-                    case 5:
-                        <td>Full Marathon</td>
-                        break;
-                    default:
-                        <td>Invalid Race Type</td>
-                        break;
-                }
+                case 1:
+                    <td>One Mile</td>
+                    break;
+                case 2:
+                    <td>5 kilometer</td>
+                    break;
+                case 3:
+                    <td>10 kilometer</td>
+                    break;
+                case 4:
+                    <td>Half Marathon</td>
+                    break;
+                case 5:
+                    <td>Full Marathon</td>
+                    break;
+                default:
+                    <td>Invalid Race Type</td>
+                    break;
+            }
             <td>
                 @String.Format("{0:00}:{1:00}:{2:00}", item.RaceTime / 3600, ((item.RaceTime % 3600) / 60), ((item.RaceTime % 3600) % 60))
             </td>
             <td>
                 @String.Format("{0:00}:{1:00}", item.MileTime / 60, item.MileTime % 60)
             </td>
-            </tr>
-            }
+            <td>
+                <a asp-controller="RaceRecords" asp-action="EditPersonal" asp-route-id="@item.RaceRecordID">Edit</a> |
+                <a asp-controller="RaceRecords" asp-action="Details" asp-route-id="@item.RaceRecordID">Details</a> |
+            </td>
+        </tr>
+        }
 
-        </table>
+    </table>
 
-    }
+}
 
-    @if (Model.MyListBlocked != null || Model.MyListFriends != null || Model.MyListPending != null)
-    {
-        <h3>Your Relationship Status</h3>
-        <table class="table">
+<!-- Lists are only created if user selects to view buddy lists.-->
+@if (Model.MyListBlocked != null || Model.MyListFriends != null || Model.MyListPending != null)
+{
+    <h3>Your Buddy List</h3>
+    <table class="table">
+
+        <!-- If lists are empty, display alternate message.-->
+        @if (Model.MyListBlocked.Any() || Model.MyListFriends.Any() || Model.MyListPending.Any())
+        {
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Status</th>
             </tr>
+            <!-- Cycle through all the users "buddies"-->
             @if (Model.MyListFriends != null)
             {
                 @foreach (var item in Model.MyListFriends)
@@ -123,6 +150,8 @@
                     </tr>
                 }
             }
+
+            <!-- Cycle through all the users "pending" buddy requests-->
             @if (Model.MyListPending != null)
             {
                 @foreach (var item in Model.MyListPending)
@@ -140,6 +169,8 @@
                     </tr>
                 }
             }
+
+            <!-- Cycle through all the users "blocked" users.-->
             @if (Model.MyListBlocked != null)
             {
                 @foreach (var item in Model.MyListBlocked)
@@ -157,7 +188,12 @@
                     </tr>
                 }
             }
-        </table>
-
-    }
-</table>
+        }
+        else
+        {
+            <tr>
+                <th>We're sorry, we can't locate anyone on your buddy or blocked list!</th>
+            </tr>
+        }
+    </table>
+}

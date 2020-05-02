@@ -44,9 +44,9 @@ namespace SprintOne.Controllers
 
             if (show != null)
             {
-                if (show.Equals("myrelationships"))
+                if (show.Equals("mybuddies"))
                 {
-                    var relationshipList = _context.BuddyList
+                    var buddyList = _context.BuddyList
                         .Where(b => b.FirstID == currid || b.SecondID == currid)
                         .ToList();
                     viewModel.MyListFriends = new List<Profile>();
@@ -54,7 +54,7 @@ namespace SprintOne.Controllers
                     viewModel.MyListPending = new List<Profile>();
                     var relationID = 0;
 
-                    foreach (var b in relationshipList)
+                    foreach (var b in buddyList)
                     {
                         if (b.FirstID == currid)
                         {
@@ -79,7 +79,7 @@ namespace SprintOne.Controllers
                         }
                         else
                         {
-                            //Invalid status.
+                            //Add nothing, place holder.
                         }
                     }
                 }
@@ -105,6 +105,7 @@ namespace SprintOne.Controllers
                     return NotFound();
                 }
 
+            var currid = GetUserID();
             var user = new ProfileViewModel();
             user.MyProfile = await _context.Profiles
                     .Include(s => s.TimeEntries)
@@ -116,7 +117,7 @@ namespace SprintOne.Controllers
                 .ToListAsync();
 
             var status = _context.BuddyList
-                .Where(b => (b.FirstID == 1 || b.SecondID == 1) && (b.FirstID == id || b.SecondID == id))
+                .Where(b => (b.FirstID == currid || b.SecondID == currid) && (b.FirstID == id || b.SecondID == id))
                 .FirstOrDefault();
 
             if (status != null)

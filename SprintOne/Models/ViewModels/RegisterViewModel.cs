@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SprintOne.Models.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace SprintOne.Models
 {
@@ -27,5 +28,9 @@ namespace SprintOne.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
+
+        public RaceRecordViewModel FirstTimeEntry { get; set; }
+
+
     }
 }

@@ -60,6 +60,46 @@
                    class="form-control" />
         </div>
     </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Race Type:</label></div>
+        <div class="col-sm-4">
+            <select asp-for="FirstTimeEntry.RaceType" asp-items="@Model.FirstTimeEntry.RaceTypeList">
+                <option>Select Race Type</option>
+            </select>
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="FirstTimeEntry.RaceType" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Hours</label></div>
+        <div class="col-sm-4">
+            <input asp-for="FirstTimeEntry.RaceTimeHours" class="form-control" />
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="FirstTimeEntry.RaceTimeHours" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Minutes</label></div>
+        <div class="col-sm-4">
+            <input asp-for="FirstTimeEntry.RaceTimeMinutes" class="form-control" />
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="FirstTimeEntry.RaceTimeMinutes" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Seconds</label></div>
+        <div class="col-sm-4">
+            <input asp-for="FirstTimeEntry.RaceTimeSeconds" class="form-control" />
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="FirstTimeEntry.RaceTimeSeconds" class="text-danger"></span>
+        </div>
+    </div>
+
     <div class="row">
         <div class="offset-2 col-sm-4">
             <button type="submit" class="btn btn-primary">Register</button>

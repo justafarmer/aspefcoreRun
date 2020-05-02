@@ -1,14 +1,15 @@
 ﻿@model SprintOne.Models.ViewModels.RaceRecordViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CreatePersonal";
 }
 
 <h1>Enter New Personal Race Time</h1>
 
 <h4></h4>
 <hr />
-        <form asp-action="Create">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="CreatePersonal">
             <div class="form-group row">
                 <div class="col-sm-2"><label>Race Type:</label></div>
                 <div class="col-sm-4">
@@ -48,7 +49,7 @@
                 </div>
             </div>
             <div class="form-group offset-sm-2">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="CreatePersonal" class="btn btn-primary" />
             </div>
         </form>
 <div>

@@ -1,0 +1,57 @@
+﻿@model SprintOne.Models.RaceRecord
+
+@{
+    ViewData["Title"] = "Delete Personal Entry";
+}
+
+<h1>Delete Personal Race Time</h1>
+<h3>Are you sure you want to delete this time entry?</h3>
+<div>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>Time Entry ID</th>
+            <th>Race Type</th>
+            <th>Total Race Time</th>
+            <th>One Mile Time</th>
+        </tr>
+        <tr>
+            <td>
+                @Model.RaceRecordID
+            </td>
+            @switch (@Model.RaceType)
+            {
+                case 1:
+                    <td>One Mile</td>
+                    break;
+                case 2:
+                    <td>5 kilometer</td>
+                    break;
+                case 3:
+                    <td>10 kilometer</td>
+                    break;
+                case 4:
+                    <td>Half Marathon</td>
+                    break;
+                case 5:
+                    <td>Full Marathon</td>
+                    break;
+                default:
+                    <td>Invalid Race Type</td>
+                    break;
+            }
+            <td>
+                @String.Format("{0:00}:{1:00}:{2:00}", @Model.RaceTime / 3600, ((@Model.RaceTime % 3600) / 60), ((@Model.RaceTime % 3600) % 60))
+            </td>
+            <td>
+                @String.Format("{0:00}:{1:00}", @Model.MileTime / 60, @Model.MileTime % 60)
+            </td>
+        </tr>
+    </table>
+
+    <form asp-action="DeletePersonal">
+        <input type="hidden" asp-for="RaceRecordID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-controller="Profiles" asp-route-show="myracerecords">Back to Personal Race Times</a>
+    </form>
+</div>

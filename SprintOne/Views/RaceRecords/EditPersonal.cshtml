@@ -1,0 +1,99 @@
+﻿@model SprintOne.Models.ViewModels.RaceRecordViewModel
+
+@{
+    ViewData["Title"] = "EditPersonal";
+}
+
+
+<h1>Edit Personal Race Time</h1>
+
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="EditPersonal">
+            <input type="hidden" asp-route-id="@Model.Record.RaceRecordID" />
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Race Type:</label></div>
+                <div class="col-sm-2">
+                @switch (@Model.RaceType)
+                {
+                    case 1:
+                        <text>One Mile</text>
+                        break;
+                    case 2:
+                        <text>5 kilometer</text>
+                        break;
+                    case 3:
+                        <text>10 kilometer</text>
+                        break;
+                    case 4:
+                        <text>Half Marathon</text>
+                        break;
+                    case 5:
+                        <text>Full Marathon</text>
+                        break;
+                    default:
+                        <text>Invalid Race Type</text>
+                        break;
+                }
+                </div>
+                <div class="col-sm-4">
+                    <select asp-for="RaceType" asp-items="@Model.RaceTypeList">
+                        <option>Select Race Type</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <span asp-validation-for="RaceType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Hours</label></div>
+                <div class="col-sm-2">
+                    <text>@Model.RaceTimeHours</text>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="RaceTimeHours" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <span asp-validation-for="RaceTimeHours" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Minutes</label></div>
+                <div class="col-sm-2">
+                    <text>@Model.RaceTimeMinutes</text>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="RaceTimeMinutes" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <span asp-validation-for="RaceTimeMinutes" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"><label>Seconds</label></div>
+                <div class="col-sm-2">
+                    <text>@Model.RaceTimeSeconds</text>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="RaceTimeSeconds" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <span asp-validation-for="RaceTimeSeconds" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group offset-sm-4">
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Profiles" asp-route-show="myracerecords">Back to Personal Race Times</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

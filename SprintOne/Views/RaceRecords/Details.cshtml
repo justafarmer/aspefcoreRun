@@ -10,33 +10,54 @@
     <h4>RaceRecord</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RaceType)
+        <dt class="col-sm-2">
+            Time Entry ID:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RaceType)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RaceRecordID)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RaceTime)
+        <dt class="col-sm-2">
+            Race Type:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RaceTime)
+        <dd class="col-sm-10">
+            @switch (@Model.RaceType)
+            {
+                case 1:
+                    <text>One Mile</text>
+                    break;
+                case 2:
+                    <text>5 kilometer</text>
+                    break;
+                case 3:
+                    <text>10 kilometer</text>
+                    break;
+                case 4:
+                    <text>Half Marathon</text>
+                    break;
+                case 5:
+                    <text>Full Marathon</text>
+                    break;
+                default:
+                    <text>Invalid Race Type</text>
+                    break;
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MileTime)
+        <dt class="col-sm-2">
+            Race Time:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MileTime)
+        <dd class="col-sm-10">
+            @String.Format("{0:00}:{1:00}:{2:00}", @Model.RaceTime / 3600, ((@Model.RaceTime % 3600) / 60), ((@Model.RaceTime % 3600) % 60))
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RaceProfile)
+        <dt class="col-sm-2">
+            Mile Time:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RaceProfile.FirstName)
+        <dd class="col-sm-2">
+            @String.Format("{0:00}:{1:00}", @Model.MileTime / 60, @Model.MileTime % 60)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.RaceRecordID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="EditPersonal" asp-route-id="@Model.RaceRecordID">Edit</a> |
+    <a asp-controller="RaceRecords" asp-action="DeletePersonal" asp-route-id="@Model.RaceRecordID">Delete</a> |
+    <a asp-action="Index" asp-controller="Profiles" asp-route-show="myracerecords">Back to Personal Race Times</a>
 </div>
